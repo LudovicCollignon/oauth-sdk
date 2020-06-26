@@ -151,7 +151,7 @@ function authSuccess()
     ] = $_GET;
     // Generate code and its expiration Date
     $code = uniqid();
-    $expireDate = new DateTime('+ 15 seconds');
+    $expireDate = new DateTime('+ 59 seconds');
     // Save them into the database
     $data = read_file('./data/code.data');
     $data[] =
