@@ -1,54 +1,51 @@
-<?php
+<?php 
 
 class OauthSdk
 {
-    public static function getAuthUrl(): array
+    public function getAuthUrl(): array
     {
         $providersConfig = include "providers.php";
 
         $authUrls = [];
 
-        $redirect_success_uri = $config["redirect_success"];
-        
-        $_SESSION["state"] = uniqid(). "_" . $config;
-        
         $state = uniqid();
         $_SESSION["state"] = $state;
 
         foreach ($providersConfig as $provider => $config) {
-            $state .= "_" . $provider;
-            $authUrls[$provider] = $config["authUrl"] . "?response_type=code&client_id={$config["client_id"]}&state=$state&scope=email&redirect_uri={$redirect_success_uri}/success";
+
+            $stateUrl = $state . "_" . $provider;
+
+            $authUrls[$provider] = $config["authUrl"] . "?response_type=code&client_id={$config["client_id"]}&state={$stateUrl}&scope={$config["scope"]}&redirect_uri={$config["redirect_success"]}";
         }
 
         return $authUrls;
     }
 
-    public static function callback()
+    public function callback()
     {
-        $urlBaseToken = "http://oauth-server/token";
+        ['code' => $code, 'state' => $state] = $_GET;
 
-        $cient_secret = "0166fbd1fe07055241db5cd787e2cb3d0a46d44c";
-        $client_id = "client_5ef3681b12cad1.72720600";
+        $rstate = explode("_", $state);
 
-        ['code' => $code, 'state' => $rstate] = $_GET;
-        
-        $rstate = explode("_", $rstate);
+        $provider = $rstate[1];
+
+        $config = $this->getConfig($provider);
 
         if ($_SESSION["state"] === $rstate[0]) {
-            $tokenUrl = "{$urlBaseToken}?grant_type=authorization_code&code={$code}&client_id={$client_id}&client_secret={$cient_secret}";
-            ['token' => $token] = json_decode(file_get_contents($tokenUrl), true);
 
-            $urlBaseApi = "http://oauth-server/me";
+            // var_dump($config);die;
+            $token = $this->getToken($provider, $code, $state, $config);
 
-            $rs = curl_init($urlBaseApi);
+            $rs = curl_init();
             curl_setopt_array($rs, [
+                CURLOPT_URL => $config["url_api"],
                 CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HEADER => 0,
+                CURLOPT_USERAGENT => 'OauthTest',
                 CURLOPT_HTTPHEADER => [
-                    "Authorization: Bearer {$token}"
+                    "Accept: application/json",
+                    "Authorization: Bearer $token"
                 ]
             ]);
-
             $resultArray = json_decode(curl_exec($rs));
             curl_close($rs);
 
@@ -56,5 +53,48 @@ class OauthSdk
         }
 
         return null;
+    }
+
+    private function getToken(string $provider, string $code, string $state, array $config)
+    {
+        if ($provider === 'oauth-server') {
+            $token_key = "token";
+            $tokenUrl = "{$config["url_token"]}?grant_type=authorization_code&code={$code}&client_id={$config["client_id"]}&client_secret={$config["client_secret"]}";
+            [$token_key => $token] = json_decode(file_get_contents($tokenUrl), true);
+        }
+
+        if ($provider === 'github') {
+
+            $token_key = "access_token";
+            $params = [
+                "client_id" => $config["client_id"],
+                "client_secret" => $config["client_secret"],
+                "code" => $code,
+                "redirect_uri" => $config["redirect_success"],
+                "state" => $state,
+            ];
+
+            $rs = curl_init($config["url_token"]);
+            curl_setopt_array($rs, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POSTFIELDS => $params,
+                CURLOPT_HTTPHEADER => ["Accept: application/json"],
+            ]);
+
+            $result = json_decode(curl_exec($rs));
+            curl_close($rs);
+            $token_key = $config["token_key"];
+            $token = $result->$token_key;
+        }
+
+        return $token;
+    }
+
+    private function getConfig($provider): array
+    {
+        $providersConfig = include "providers.php";
+        $config = $providersConfig[$provider];
+
+        return $config;
     }
 }

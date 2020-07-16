@@ -1,9 +1,1 @@
-a:3:{s:5:"token";s:23:"5ee0b51bf1c215.87778346";s:10:"expireDate";O:8:"DateTime":3:{s:4:"date";s:26:"2020-06-10 11:25:31.992951";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:7:"user_id";s:13:"5ee0b51c02486";}
-a:3:{s:5:"token";s:23:"5ef2407b7e5a58.01404356";s:10:"expireDate";O:8:"DateTime":3:{s:4:"date";s:26:"2020-06-23 18:48:43.519321";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:7:"user_id";s:13:"5ef2407b88c3c";}
-a:3:{s:5:"token";s:23:"5ef247033882f6.64614018";s:10:"expireDate";O:8:"DateTime":3:{s:4:"date";s:26:"2020-06-23 19:16:35.231554";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:7:"user_id";s:13:"5ef2470351977";}
-a:3:{s:5:"token";s:23:"5ef3683c81e816.50760756";s:10:"expireDate";O:8:"DateTime":3:{s:4:"date";s:26:"2020-06-24 15:50:36.532156";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:7:"user_id";s:13:"5ef3683c84f76";}
-a:3:{s:5:"token";s:23:"5ef3687e458de0.28341085";s:10:"expireDate";O:8:"DateTime":3:{s:4:"date";s:26:"2020-06-24 15:51:42.284918";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:7:"user_id";s:13:"5ef3687e48974";}
-a:3:{s:5:"token";s:23:"5ef3694405b401.75888457";s:10:"expireDate";O:8:"DateTime":3:{s:4:"date";s:26:"2020-06-24 15:55:00.023412";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:7:"user_id";s:13:"5ef36944097fa";}
-a:3:{s:5:"token";s:23:"5ef607551043e5.29180287";s:10:"expireDate";O:8:"DateTime":3:{s:4:"date";s:26:"2020-06-26 15:33:57.066711";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:7:"user_id";s:13:"5ef607551294e";}
-a:3:{s:5:"token";s:23:"5ef6077364a2a5.15674928";s:10:"expireDate";O:8:"DateTime":3:{s:4:"date";s:26:"2020-06-26 15:34:27.412242";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:7:"user_id";s:13:"5ef6077369c06";}
-a:3:{s:5:"token";s:23:"5ef609b8892204.85671038";s:10:"expireDate";O:8:"DateTime":3:{s:4:"date";s:26:"2020-06-26 15:44:08.561785";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:7:"user_id";s:13:"5ef609b88fcf4";}
+a:3:{s:5:"token";s:23:"5f10b9ff674989.42448480";s:10:"expireDate";O:8:"DateTime":3:{s:4:"date";s:26:"2020-07-16 21:35:11.423123";s:13:"timezone_type";i:3;s:8:"timezone";s:3:"UTC";}s:7:"user_id";s:13:"5f10b9ff68280";}
