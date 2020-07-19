@@ -57,34 +57,35 @@ class OauthSdk
 
     private function getToken(string $provider, string $code, string $state, array $config)
     {
-        if ($provider === 'oauth-server') {
-            $token_key = "token";
-            $tokenUrl = "{$config["url_token"]}?grant_type=authorization_code&code={$code}&client_id={$config["client_id"]}&client_secret={$config["client_secret"]}";
-            [$token_key => $token] = json_decode(file_get_contents($tokenUrl), true);
-        }
+        $token = '';
+        $token_key = $config["token_key"];
 
-        if ($provider === 'github') {
+        switch ($provider) {
+            case 'oauth-server':
+                $tokenUrl = "{$config["url_token"]}?grant_type=authorization_code&code={$code}&client_id={$config["client_id"]}&client_secret={$config["client_secret"]}";
+                [$token_key => $token] = json_decode(file_get_contents($tokenUrl), true);
+                break;
 
-            $token_key = "access_token";
-            $params = [
-                "client_id" => $config["client_id"],
-                "client_secret" => $config["client_secret"],
-                "code" => $code,
-                "redirect_uri" => $config["redirect_success"],
-                "state" => $state,
-            ];
+            default:
+                $params = [
+                    "client_id" => $config["client_id"],
+                    "client_secret" => $config["client_secret"],
+                    "code" => $code,
+                    "redirect_uri" => $config["redirect_success"],
+                    "state" => $state,
+                ];
 
-            $rs = curl_init($config["url_token"]);
-            curl_setopt_array($rs, [
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_POSTFIELDS => $params,
-                CURLOPT_HTTPHEADER => ["Accept: application/json"],
-            ]);
+                $rs = curl_init($config["url_token"]);
+                curl_setopt_array($rs, [
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_POSTFIELDS => $params,
+                    CURLOPT_HTTPHEADER => ["Accept: application/json"],
+                ]);
 
-            $result = json_decode(curl_exec($rs));
-            curl_close($rs);
-            $token_key = $config["token_key"];
-            $token = $result->$token_key;
+                $result = json_decode(curl_exec($rs));
+                curl_close($rs);
+                $token = $result->$token_key;
+                break;
         }
 
         return $token;
