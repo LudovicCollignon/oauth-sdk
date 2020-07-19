@@ -27,3 +27,9 @@ $authUrls = (new OauthSdk())->getAuthUrl();
 echo "<a href='{$authUrls['oauth-server']}'>Log in with OauthServer</a>";
 echo "<a href='{$authUrls['github']}'>Log in with Github</a>";
 ```
+
+Use the call back method redirect in the success route of your app :
+
+```
+(new OauthSdk())->callback();
+```
